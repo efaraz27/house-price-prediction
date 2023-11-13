@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:client/provider/dark_theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,15 +26,19 @@ class Home extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 1024),
           child: Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: const Column(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+              child: Column(
                 children: [
-                  HeroImage(),
-                  SizedBox(
+                  const HeroImage(),
+                  const SizedBox(
                     height: 16,
                   ),
-                  HeroText(),
-                  Expanded(
+                  const HeroText(),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  const HeroDescription(),
+                  const Expanded(
                       child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -50,6 +56,20 @@ class Home extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class HeroDescription extends StatelessWidget {
+  const HeroDescription({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Predict the price of your dream home based on your requirements.',
+      style: GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w300),
     );
   }
 }
@@ -84,8 +104,7 @@ class GetStartedButton extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
       child: Text(
         'Get Started',
-        style: GoogleFonts.roboto(
-            fontSize: 18, fontWeight: FontWeight.w400),
+        style: GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w400),
       ),
     );
   }

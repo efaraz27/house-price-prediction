@@ -1,5 +1,6 @@
 import 'package:client/provider/dark_theme_provider.dart';
 import 'package:client/screens/predict.dart';
+import 'package:client/screens/results.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'color_schemes.g.dart';
@@ -49,6 +50,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             routes: {
               '/predict': (context) => const Predict(),
+              '/results': (context) => const Results()
             },
           );
         }));
