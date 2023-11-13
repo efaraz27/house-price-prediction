@@ -1,7 +1,8 @@
+import 'package:client/provider/prediction_provider.dart';
 import 'package:client/screens/home.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class Results extends StatefulWidget {
   const Results({super.key});
@@ -11,36 +12,45 @@ class Results extends StatefulWidget {
 }
 
 class _ResultsState extends State<Results> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          // elevation: 0,
-          actions: const [
-            // button to toggle dark mode
-            ThemeToggleButton(),
-            SizedBox(
-              width: 16,
-            )
-          ],
-        ),
-        body: Container(
-          constraints: const BoxConstraints(maxWidth: 1024),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 18,
-          ),
-          child: const Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SelectedDataCard(),
+    return Consumer<PredictionProvider>(
+        builder: (BuildContext context, value, Widget? child) {
+      return Scaffold(
+          appBar: AppBar(
+            // elevation: 0,
+            actions: const [
+              // button to toggle dark mode
+              ThemeToggleButton(),
               SizedBox(
-                height: 16,
-              ),
-              PredictedPriceCard(),
+                width: 16,
+              )
             ],
           ),
-        ));
+          body: Container(
+            constraints: const BoxConstraints(maxWidth: 1024),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 18,
+            ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SelectedDataCard(),
+                SizedBox(
+                  height: 16,
+                ),
+                PredictedPriceCard(),
+              ],
+            ),
+          ));
+    });
   }
 }
 
@@ -49,23 +59,18 @@ class PredictedPriceCard extends StatelessWidget {
     super.key,
   });
 
-  static BarChartData data = BarChartData(
-    maxY: 100,
-    minY: 0,
-  );
-
   @override
   Widget build(BuildContext context) {
-    return const Card(
+    return Card(
       child: Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 18,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
+            const Row(
               children: [
                 Icon(
                   Icons.monetization_on,
@@ -84,12 +89,12 @@ class PredictedPriceCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             Text(
-              '₹ 1,00,00,000',
-              style: TextStyle(
+              "₹ ${context.watch<PredictionProvider>().predictionResult.toString()}",
+              style: const TextStyle(
                 fontSize: 48,
                 fontWeight: FontWeight.bold,
               ),

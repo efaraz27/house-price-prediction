@@ -1,4 +1,5 @@
 import 'package:client/provider/dark_theme_provider.dart';
+import 'package:client/provider/prediction_provider.dart';
 import 'package:client/screens/predict.dart';
 import 'package:client/screens/results.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   DarkThemeProvider themeChangeProvider = DarkThemeProvider();
+  PredictionProvider predictionProvider = PredictionProvider();
 
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
@@ -37,7 +39,9 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
         providers: [
           // provider for dark theme
-          ChangeNotifierProvider(create: (_) => themeChangeProvider),
+          ChangeNotifierProvider(create: (context) => themeChangeProvider),
+          // provider for prediction result
+          ChangeNotifierProvider(create: (context) => predictionProvider),
         ],
         child: Consumer<DarkThemeProvider>(
             builder: (BuildContext context, value, Widget? child) {

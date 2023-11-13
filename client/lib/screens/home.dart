@@ -81,9 +81,15 @@ class HeroImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Image.asset('assets/house.png'));
+    return Container(
+        constraints: const BoxConstraints(maxHeight: 450),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image(
+              image: AssetImage('assets/house.png'),
+              fit: BoxFit.cover,
+              width: MediaQuery.of(context).size.width,
+            )));
   }
 }
 

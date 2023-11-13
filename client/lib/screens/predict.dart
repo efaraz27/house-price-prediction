@@ -1,9 +1,13 @@
-import 'dart:js_interop';
+import 'dart:convert';
 
 import 'package:client/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:client/provider/prediction_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class Predict extends StatelessWidget {
   const Predict({super.key});
@@ -93,17 +97,52 @@ class _PredictFormState extends State<PredictForm> {
     });
   }
 
-  void handleSubmit() {
+  void handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Processing Data')));
-      // print form data
-      print(_city);
-      print(_area);
-      print(_bedrooms);
-      print(_maintenance);
-      print(_security);
-      Navigator.pushNamed(context, '/results');
+
+      var requestBody = jsonEncode({
+        "city": _city,
+        "area": int.parse(_area!),
+        "no_of_bedrooms": int.parse(_bedrooms!),
+        "maintenance_staff": _maintenance,
+        "security": _security
+      });
+
+      try {
+        final response = await http.post(
+            Uri.parse("http://localhost:8000/predict"),
+            headers: {"Content-Type": "application/json"},
+            body: requestBody);
+
+        if (!context.mounted) return;
+        context.read<PredictionProvider>().predictionResult =
+            await jsonDecode(response.body)['prediction'];
+        if (!context.mounted) return;
+        Navigator.pushNamed(context, '/results');
+      } catch (e) {
+        print(e);
+        if (!context.mounted) return;
+        //  show and error alert
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Error'),
+                content: const Text('Something went wrong'),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Ok'))
+                ],
+              );
+            });
+      }
+
+      // Navigator.pushNamed(context, '/results');
     }
   }
 
