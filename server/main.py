@@ -101,7 +101,7 @@ def predict(request: HousePredictionRequest):
     prediction = model.predict(data)[0]*100000
 
     # round to 2 decimal places
-    prediction = round(prediction, 2)
+    prediction = abs(round(prediction, 2))
     
     return {"prediction": prediction}
 

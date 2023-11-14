@@ -117,6 +117,11 @@ class _PredictFormState extends State<PredictForm> {
             body: requestBody);
 
         if (!context.mounted) return;
+        context.read<PredictionProvider>().city = _city!;
+        context.read<PredictionProvider>().area = int.parse(_area!);
+        context.read<PredictionProvider>().bedrooms = int.parse(_bedrooms!);
+        context.read<PredictionProvider>().maintenance = _maintenance!;
+        context.read<PredictionProvider>().security = _security!;
         context.read<PredictionProvider>().predictionResult =
             await jsonDecode(response.body)['prediction'];
         if (!context.mounted) return;

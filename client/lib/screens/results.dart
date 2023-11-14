@@ -3,6 +3,7 @@ import 'package:client/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class Results extends StatefulWidget {
   const Results({super.key});
@@ -12,7 +13,6 @@ class Results extends StatefulWidget {
 }
 
 class _ResultsState extends State<Results> {
-
   @override
   void initState() {
     super.initState();
@@ -59,6 +59,11 @@ class PredictedPriceCard extends StatelessWidget {
     super.key,
   });
 
+  static var currencyFormatter = NumberFormat.simpleCurrency(
+    locale: 'en_IN',
+    decimalDigits: 2,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -93,7 +98,9 @@ class PredictedPriceCard extends StatelessWidget {
               height: 16,
             ),
             Text(
-              "₹ ${context.watch<PredictionProvider>().predictionResult.toString()}",
+              // "₹ ${context.watch<PredictionProvider>().predictionResult.toString()}",
+              currencyFormatter
+                  .format(context.watch<PredictionProvider>().predictionResult),
               style: const TextStyle(
                 fontSize: 48,
                 fontWeight: FontWeight.bold,
@@ -133,7 +140,7 @@ class SelectedDataCard extends StatelessWidget {
                     width: 8,
                   ),
                   Text(
-                    'Kolkata',
+                    context.watch<PredictionProvider>().city,
                     style: GoogleFonts.roboto(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
@@ -144,18 +151,18 @@ class SelectedDataCard extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              const Text(
-                'Area: 1000 sqft',
-                style: TextStyle(
+              Text(
+                "Area: ${context.watch<PredictionProvider>().area.toString()} sqft",
+                style: const TextStyle(
                   fontSize: 18,
                 ),
               ),
               const SizedBox(
                 height: 8,
               ),
-              const Text(
-                'Bedrooms: 2',
-                style: TextStyle(
+              Text(
+                "Bedrooms: ${context.watch<PredictionProvider>().bedrooms.toString()}",
+                style: const TextStyle(
                   fontSize: 18,
                 ),
               ),
@@ -168,9 +175,10 @@ class SelectedDataCard extends StatelessWidget {
               ),
               IntrinsicHeight(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('Maintenance: Yes',
+                    Text(
+                        'Maintenance: ${context.watch<PredictionProvider>().maintenance ? 'Yes' : 'No'}',
                         style: GoogleFonts.roboto(
                           fontSize: 18,
                         )),
@@ -181,7 +189,8 @@ class SelectedDataCard extends StatelessWidget {
                     const SizedBox(
                       width: 8,
                     ),
-                    Text('24x7 Security: Yes',
+                    Text(
+                        '24x7 Security: ${context.watch<PredictionProvider>().security ? 'Yes' : 'No'}',
                         style: GoogleFonts.roboto(
                           fontSize: 18,
                         )),
